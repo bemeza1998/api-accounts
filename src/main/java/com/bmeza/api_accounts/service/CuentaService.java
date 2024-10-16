@@ -26,10 +26,10 @@ public class CuentaService {
         Optional<Cuenta> cuentaExistente = this.repository.findByNumeroCuenta(cuenta.getNumeroCuenta());
         try {
             webClient.get()
-                    .uri(baseURL.getApiClientsURL() + "/api/clientes/" + cuenta.getIdCliente()).retrieve()
+                    .uri(baseURL.getApiClientsURL() + "/api/clientes/" + cuenta.getIdPersona()).retrieve()
                     .bodyToMono(Object.class).block();
         } catch (Exception e) {
-            throw new CustomerNotActiveException("El cliente " + cuenta.getIdCliente() + " no existe");
+            throw new CustomerNotActiveException("El cliente " + cuenta.getIdPersona() + " no existe");
         }
 
         if (!cuentaExistente.isPresent()) {
@@ -47,7 +47,7 @@ public class CuentaService {
     }
 
     public void modificarCuenta(Cuenta cuenta) {
-        Optional<Cuenta> cuentaOpt = this.repository.findById(cuenta.getId());
+        Optional<Cuenta> cuentaOpt = this.repository.findByNumeroCuenta(cuenta.getNumeroCuenta());
         if (cuentaOpt.isPresent()) {
             Cuenta cuentaBd = cuentaOpt.get();
             cuentaBd.setTipo(cuenta.getTipo());

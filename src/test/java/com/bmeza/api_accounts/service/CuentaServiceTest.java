@@ -50,8 +50,7 @@ public class CuentaServiceTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         cuenta = Cuenta.builder()
-                .id(1L)
-                .idCliente("CL-00003")
+                .idPersona("CL-00003")
                 .numeroCuenta("123")
                 .tipo("AHORROS")
                 .saldo(new BigDecimal("500"))
@@ -93,7 +92,7 @@ public class CuentaServiceTest {
 
     @Test
     public void modificar_cuentaModificada() {
-        when(cuentaRepository.findById(cuenta.getId()))
+        when(cuentaRepository.findByNumeroCuenta(cuenta.getNumeroCuenta()))
                 .thenReturn(Optional.of(cuenta));
 
         cuenta.setTipo("CORRIENTE");
@@ -104,7 +103,7 @@ public class CuentaServiceTest {
     }
 
     @Test
-    public void testEliminarCuentaSuccess() {
+    public void eliminarCuenta_cuentaEliminada() {
 
         when(cuentaRepository.findByNumeroCuenta(cuenta.getNumeroCuenta()))
                 .thenReturn(Optional.of(cuenta));

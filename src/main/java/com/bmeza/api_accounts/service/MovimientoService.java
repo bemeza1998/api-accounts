@@ -78,7 +78,7 @@ public class MovimientoService {
             Cuenta cuentaDb = cuentaOpt.get();
             try {
                 webClient.get()
-                        .uri(baseURL.getApiClientsURL() + "/api/clientes/activo/" + cuentaDb.getIdCliente()).retrieve()
+                        .uri(baseURL.getApiClientsURL() + "/api/clientes/activo/" + cuentaDb.getIdPersona()).retrieve()
                         .bodyToMono(Boolean.class).block();
             } catch (Exception e) {
                 throw new CustomerNotActiveException("El cliente no puede realizar transacciones");

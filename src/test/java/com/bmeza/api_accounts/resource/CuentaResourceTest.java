@@ -41,8 +41,7 @@ public class CuentaResourceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         cuenta = Cuenta.builder()
-                .id(1L)
-                .idCliente("CL-00003")
+                .idPersona("CL-00003")
                 .numeroCuenta("123")
                 .tipo("AHORROS")
                 .saldo(new BigDecimal("500"))
@@ -69,8 +68,8 @@ public class CuentaResourceTest {
 
         when(cuentaService.buscarCuenta(anyString())).thenReturn(cuenta);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/cuentas")
-                .param("numeroCuenta", "CL-00003")).andReturn();
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/cuentas/" + cuenta.getNumeroCuenta()))
+                .andReturn();
 
         Cuenta cuentaRespuesta = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Cuenta.class);
 
@@ -83,7 +82,7 @@ public class CuentaResourceTest {
 
         doNothing().when(cuentaService).modificarCuenta(any(Cuenta.class));
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/cuentas")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/cuentas")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cuenta)))
                 .andReturn();
@@ -96,8 +95,8 @@ public class CuentaResourceTest {
 
         doNothing().when(cuentaService).eliminarCuenta(anyString());
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/cuentas")
-                .param("numeroCuenta", "CL-00003"))
+        MvcResult mvcResult = mockMvc
+                .perform(MockMvcRequestBuilders.delete("/api/cuentas/eliminar/" + cuenta.getNumeroCuenta()))
                 .andReturn();
 
         assertEquals(200, mvcResult.getResponse().getStatus());

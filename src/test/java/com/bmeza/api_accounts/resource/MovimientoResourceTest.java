@@ -77,8 +77,7 @@ public class MovimientoResourceTest {
     public void buscarMovimiento_movimientoEncontrado() throws Exception {
         when(movimientoService.buscarMovimiento(anyLong())).thenReturn(movimiento);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/movimientos")
-                .param("id", "1"))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/movimientos/"+movimiento.getId()))
                 .andReturn();
 
         Movimiento movimientoRespuesta = objectMapper.readValue(mvcResult.getResponse().getContentAsString(),
@@ -92,7 +91,7 @@ public class MovimientoResourceTest {
     public void modificarMovimiento_movimientoModifcado() throws Exception {
         doNothing().when(movimientoService).modificarMovimiento(any(Movimiento.class));
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.patch("/api/movimientos")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/movimientos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(movimiento)))
                 .andReturn();
@@ -101,12 +100,11 @@ public class MovimientoResourceTest {
     }
 
     @Test
-    public void eliminarMovimiento_movimientoMEliminado() throws Exception {
+    public void eliminarMovimiento_movimientoEliminado() throws Exception {
         doNothing().when(movimientoService).eliminarMovimiento(anyLong());
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/movimientos")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(1L)))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/movimientos/eliminar/"+movimiento.getId())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         assertEquals(200, mvcResult.getResponse().getStatus());
@@ -125,7 +123,7 @@ public class MovimientoResourceTest {
     }
 
     @Test
-    void generarReporte_reporteGenerado() throws Exception {
+    public void generarReporte_reporteGenerado() throws Exception {
 
         List<MovimientoEstadoCuentaDTO> reportes = List.of(new MovimientoEstadoCuentaDTO());
 

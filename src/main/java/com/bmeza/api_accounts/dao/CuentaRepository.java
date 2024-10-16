@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bmeza.api_accounts.model.Cuenta;
 
-public interface CuentaRepository extends JpaRepository<Cuenta, Long>{
+public interface CuentaRepository extends JpaRepository<Cuenta, String>{
 
     Optional<Cuenta> findByNumeroCuenta (String numeroCuenta);
     

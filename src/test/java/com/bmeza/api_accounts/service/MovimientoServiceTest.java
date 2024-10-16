@@ -121,16 +121,17 @@ public class MovimientoServiceTest {
     }
 
     @Test
-    void realizarMovimiento_movimientoExistoso() {
+    public void realizarMovimiento_movimientoExistoso() {
         Cuenta cuenta = Cuenta.builder()
-                .id(1L)
-                .idCliente("CL-00003")
-                .numeroCuenta("123")
+                .idPersona("CL-00003")
+                .numeroCuenta("85665")
                 .tipo("AHORROS")
                 .saldo(new BigDecimal("500"))
                 .saldoInicial(new BigDecimal("500"))
                 .estado("ACT")
                 .build();
+
+        movimiento.setSaldoPostMovimiento(null);
 
         when(webClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestHeadersSpec);

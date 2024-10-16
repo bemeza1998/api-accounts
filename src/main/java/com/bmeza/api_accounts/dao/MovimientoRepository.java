@@ -22,14 +22,14 @@ public interface MovimientoRepository extends JpaRepository<Movimiento, Long>{
                    "m.valor AS valor_movimiento, " +
                    "m.tipo AS tipo_movimiento " +
                    "FROM cliente c " +
-                   "JOIN cuenta cu ON c.id_cliente = cu.id_cliente " +
+                   "JOIN cuenta cu ON c.id_persona = cu.id_persona " +
                    "JOIN movimiento m ON cu.numero_cuenta = m.numero_cuenta " +
-                   "WHERE c.id_cliente = :idCliente " + 
+                   "WHERE c.id_persona = :idPersona " + 
                    "AND m.fecha > :fechaInicial AND m.fecha < :fechaFinal " +
                    "ORDER BY m.fecha DESC, m.numero_cuenta",
            nativeQuery = true)
     List<Object[]> findMovimientosByCliente(
-        @Param("idCliente") String idCliente,
+        @Param("idPersona") String idPersona,
         @Param("fechaInicial") Date fechaInicial,
         @Param("fechaFinal") Date fechaFinal
         );

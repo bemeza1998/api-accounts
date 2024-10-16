@@ -6,8 +6,9 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,20 +35,20 @@ public class MovimientoResource {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity<Movimiento> buscarMovimiento(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Movimiento> buscarMovimiento(@PathVariable Long id) {
         Movimiento Movimiento = this.service.buscarMovimiento(id);
         return ResponseEntity.ok(Movimiento);
     }
 
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<String> modificarMovimiento(@RequestBody Movimiento Movimiento) {
         this.service.modificarMovimiento(Movimiento);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> eliminarMovimiento(@RequestBody Long id) {
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarMovimiento(@PathVariable Long id) {
         this.service.eliminarMovimiento(id);
         return ResponseEntity.ok().build();
     }
@@ -61,12 +62,12 @@ public class MovimientoResource {
     @GetMapping("/reportes")
     public ResponseEntity<List<MovimientoEstadoCuentaDTO>> generarReporte(
             @RequestParam String idCliente,
-            @RequestParam String fechaInical,
+            @RequestParam String fechaInicial,
             @RequestParam String fechaFinal) {
                 
         List<MovimientoEstadoCuentaDTO> movimientos;
         try {
-            movimientos = this.service.generarReporte(idCliente, fechaInical, fechaFinal);
+            movimientos = this.service.generarReporte(idCliente, fechaInicial, fechaFinal);
             return ResponseEntity.ok(movimientos);
         } catch (ParseException e) {
             return ResponseEntity.badRequest().build();
